@@ -23,11 +23,11 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $vstickets = VsTicket::where('activo','=',1)
+        $tickets = VsTicket::where('activo','=',1)
             ->where('estatus','=','Abierto')
             ->where('categoria','<>','Reporte de aula')->get();
         $tecnicos = Tecnico::where('activo','=',1)->get();
-        $tickets = $this->cargarDT($vstickets);
+        //$tickets = $this->cargarDT($vstickets);
         return view('ticket.index')->with('tickets',$tickets)->with('tecnicos', $tecnicos);
     }
     public function cargarDT($consulta)
@@ -38,7 +38,7 @@ class TicketController extends Controller
 
             $ruta = "eliminar".$value['id'];
             $eliminar = route('delete-ticket', $value['id']);
-            $actualizar =  route('ticket.edit', $value['id']);
+            $actualizar =  route('tickets.edit', $value['id']);
          
 
             $acciones = '
@@ -97,9 +97,10 @@ class TicketController extends Controller
     }
     public function revisionTickets()
     {
-        $tickets = VsTicket::where('activo','=',1)->get();
+        $vstickets = VsTicket::where('activo','=',1)->get();
         $tecnicos = Tecnico::where('activo','=',1)->get();
-        return view('ticket.index')->with('tickets',$tickets)->with('tecnicos', $tecnicos);
+        $tickets = $this->cargarDT($vstickets);
+        return view('ticket.revisionTickets')->with('tickets',$tickets)->with('tecnicos', $tecnicos);
     }
     /**
      * Show the form for creating a new resource.
